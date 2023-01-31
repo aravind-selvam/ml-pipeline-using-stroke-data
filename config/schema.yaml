@@ -1,0 +1,43 @@
+columns:
+  gender: category
+  age: int
+  hypertension: int
+  heart_disease: category
+  ever_married: category
+  work_type: category
+  Residence_type: category
+  avg_glucose_level: int
+  bmi: float
+  smoking_status: category
+  stroke: int
+
+# for data validation 
+numerical_columns:
+   - age
+   - avg_glucose_level
+   - bmi
+   - stroke
+categorical_columns:
+    - ever_married
+    - work_type
+    - Residence_type
+    - smoking_status
+
+# for data transformation
+Numerical_columns:
+  - age
+
+Categorical_columns:
+  - ever_married
+  - work_type
+  - Residence_type
+  - smoking_status
+
+Transformation_columns:
+  - avg_glucose_level
+  - bmi
+
+Drop_columns:
+  - id
+
+Target_column: stroke

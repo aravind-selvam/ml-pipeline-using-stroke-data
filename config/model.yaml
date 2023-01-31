@@ -1,0 +1,39 @@
+grid_search:
+  class: GridSearchCV
+  module: sklearn.model_selection
+  params:
+    cv: 2
+    verbose: 3
+model_selection:
+  module_0:
+    class: CatBoostClassifier
+    module: catboost
+    params:
+      learning_rate: 0.1
+    search_param_grid:
+      learning_rate:
+      - 0.1
+      - 0.01
+      max_depth:
+      - 10
+      - 15
+
+  module_1:
+    class: KNeighborsClassifier
+    module: sklearn.neighbors
+    search_param_grid:
+      algorithm:
+      - auto
+      - ball_tree
+      - kd_tree
+      - brute
+      weights:
+      - uniform
+      - distance
+      n_neighbors:
+      - 3
+      - 4
+      - 5
+      - 9
+      - 7
+    

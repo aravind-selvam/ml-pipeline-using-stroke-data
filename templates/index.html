@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Heart Stroke Prediction</title>
+    <link rel="stylesheet" href="{{ url_for('static', path='/css/style.css')}}">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-iYQeCzEYFbKjA/T2uDLTpkwGzCiq6soy8tYaI1GyVh/UjpbCx/TYkiZhlZB6+fzT" crossorigin="anonymous">
+  </head>
+  <body>
+    <nav class="navbar navbar-light bg-light static-top">
+        <div class="container-fluid">
+           <a class="navbar-brand" href="https://ineuron.ai"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAIkAAAAlCAMAAABBJDpuAAAAVFBMVEX/fgD/iQA7NzIyMjMnNYInNYEnNYInNYEzMzInNYQnNYETJzsnNYIwN1wxMjNoTis4O1YrNm0xOF47PE9DP0dEQEVpTVkAJJ4nNYEOLJHJbiAzMzOmmmHRAAAAFnRSTlOh/vu+986oen9fP2UqEzQkFAIDAAEEILVBJQAAA3FJREFUWMPNmO2WoyAMQG0VBARtdVRs3/89NwkgaF1rd2aOm18tIrnkgwSz7n+R7LcV1ELkeS7E7VySRlyfQXJhTiO55c+liP4cEuH1X8E7gaV+S3Jv2zYZ/Vr+/Sdx2vP6doc/fSPcf/GOpLSFVXFUW8t+giRP47TOd60yk1hbxIhSP0ACKPWrvw7YBIT/lcQY84G3Wk17ugWQfg5UsQJpjflKSLQi7xTWyk0SXTJ4VnB5D1yccxmp4Z+mX5KGNS+SPXVNll0ulyxL0wYmloBB6zL/MpCoAgjAJiUM6w0SboMwPUdRogvNKcNM3smFdRvEcJJkKcflQa+X0pNIfBGW0zKqjyQtw4VLKQlI7ZLgdrRNSZDjMQx2GB4pCkxkCrfGWUTJ0Egan6muCHgJCUwtnCk0mrJ9Q8K5LUqtdSfynkAedhynaRqngVDaXLiJEAzkFkM71IuIlWRYtSQpbXSZDvQ7JPCei9brs+oaABkn74LRIkpFaVxGnzjvIxTYREOoEwn5r01JTDRTcO87Eu3zNUeTPKZpjrIRrNIDCjzALbPk7LJMIokOEQu2K7yKQAKvFDF9pVe0R+LGb7h1MMkw2ijjA/1zhSfSphvEAChXJEhAqwYStIJWXnTpvbdH4hTUwSQ2JRmQpILDLYbB7J41SYiLcNozu5Z3JMo7RxBJahI7WSRByCMkqJt9hySESbVJcvmARJGFExJmdBSl2oM2+T4JLWfgaGFptizlPUm1FydHSdyZ7UnS4ySph2kS0kJrkvr5NJg7dnrJnfxgxPozRPGtkyPNOxtaiDvbIAF9L+5B5zTI2BwlwXmM+U3zReav3o0F8oUEFFZ42McDZYomOUziFmezgWyo251Uc1nyKJol7URCEvIYUEbHYaEGQi9C9egwCdVfHwiaajfjKMUcHcRacCylhWJbJDfq47EEDhYqoIWjHnwDXZPpPiChPQelLU+Cbm4w50FmYgkvFwpiWwCC/Um/SLcNElOC9RVj6qWpCiEMvRUK4zLpdKmPw8rVldy/qxjn60wLrVLWJIPLiZJRr3fsvnOHPvare+lB93tb37T20D82jqOt+zNuXhuNvNhp7X+PpHb3rvV9R5xjE2SpyCN9ffQO+GtWIZr5Xnytz4gTMIRYfys47/uJEXny/aQ/95tSUwmU+uRvSp/IHzQqZYpYrQmxAAAAAElFTkSuQmCC" /></a>
+        </div>
+     </nav>
+    <section>
+        <div class="container-fluid">
+            <div class="container">
+                <form action="/" method="post">
+                    <h1>     
+                    <legend>Heart Stroke Prediction</legend>
+                    </h1>
+                    <div class="mb-3">
+                        <label class="form-label">Patient's Gender</label>
+                        <select class="form-control" name="gender" placeholder="Enter Patient's Gender"
+                            required>
+                            <option class="placeholder" selected disabled value="">Select your Gender</option>
+                            <option value="Male">
+                                Male
+                            </option>
+                            <option value="Female">
+                                Female
+                            </option>
+                            <option value="Other">
+                                Other
+                            </option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Patient's Age</label>
+                        <input class="form-control" type="number" name="age"
+                            placeholder="Enter Patient's age" min='0' max='100'/>
+                    </div>    
+                    <div class="mb-3">
+                        <label class="form-label">Patient's HyperTension [Yes = 1 : No = 0] </label>
+                        <select class="form-control" name="hypertension" placeholder="Patient has Hyper Tension?"
+                            required>
+                            <option class="placeholder" selected disabled value="">Hyper Tension</option>
+                            <option value=0>
+                                Yes
+                            </option>
+                            <option value=1>
+                                No
+                            </option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Patient's Heart Disease [Yes = 1 : No = 0] </label>
+                        <select class="form-control" name="heart_disease" placeholder="Patient has Heart Disease?"
+                            required>
+                            <option class="placeholder" selected disabled value="">Heart Disease</option>
+                            <option value=0>
+                                Yes
+                            </option>
+                            <option value=1>
+                                No
+                            </option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Patient Ever Married?</label>
+                        <select class="form-control" name="ever_married" placeholder="is Patient Married?"
+                            required>
+                            <option class="placeholder" selected disabled value="">Are you Married?</option>
+                            <option value=Yes>
+                                Yes
+                            </option>
+                            <option value=No>
+                                No
+                            </option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Patient's Work Type</label>
+                        <select class="form-control" name="work_type" placeholder="Enter Patient's Work Type"
+                            required>
+                            <option class="placeholder" selected disabled value="">Work Type</option>
+                            <option value="children">
+                                Children
+                            </option>
+                            <option value="Govt_job">
+                                Government Job
+                            </option>
+                            <option value="Never_worked">
+                                Never Worked
+                            </option>
+                            <option value="Private">
+                                Private
+                            </option>
+                            <option value="Self-employed">
+                                Self-employed
+                            </option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Residence Type</label>
+                        <select class="form-control" name="Residence_type" placeholder="Enter Patient's Residence type"
+                            required>
+                            <option class="placeholder" selected disabled value="">Select Residence Type</option>
+                            <option value="Urban">
+                                Urban
+                            </option>
+                            <option value="Rural">
+                                Rural
+                            </option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Smoking Status</label>
+                        <select class="form-control" name="smoking_status" placeholder="Enter you Smoking Status"
+                            required>
+                            <option class="placeholder" selected disabled value="">Select your Smoking Status</option>
+                            <option value="formerly smoked">
+                                Formerly smoked
+                            </option>
+                            <option value="never smoked">
+                                Never smoked
+                            </option>
+                            <option value="smokes">
+                                Smokes
+                            </option>
+                            <option value="Unknown">
+                                Unknown
+                            </option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Average Glucose Level [50-300]</label>
+                        <input class="form-control" type="number" name="avg_glucose_level"
+                            placeholder="Enter Patient's Avg Glucose Level" min='50' max='300'/>
+                    </div>            
+                    <div class="mb-3">
+                        <label class="form-label">Body Mass Index [10-100]</label>
+                        <input class="form-control" type="number" name="bmi"
+                            placeholder="Enter Patient's BMI" min='10' max='100'/>
+                    </div>    
+                    <div class="mb-3">
+                        <input class="btn btn-primary" type="submit" value="Predict" required />
+                    </div>
+        
+                </form>
+            </div>
+            <div class="text-center text-black">
+                <h2>Prediction : {{context}} </h2>
+            </div>
+        </div>
+    </section>
+    <script src="https://code.jquery.com/jquery-3.2.1.js"></script>
+    <script type="text/javascript">
+        $(".input").focus(function(){
+            $(this).parent().addClass("focus");
+        }).blur(function(){
+            if($(this).val() === ''){
+                $(this).parent().removeClass("focus");
+            }
+        })
+    </script>
+  </body>
+</html>

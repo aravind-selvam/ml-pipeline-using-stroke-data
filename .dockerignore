@@ -1,0 +1,10 @@
+.gitignore
+artifact
+venv
+logs
+infrastructure
+docs
+stroke
+heart_stroke_predictior.egg-info
+catboost_info
+notebooks

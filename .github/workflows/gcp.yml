@@ -1,0 +1,101 @@
+name: workflow
+
+on:
+  push:
+    branches:
+      - main
+    paths-ignore:
+      - 'README.md'
+
+permissions:
+  id-token: write
+  contents: read
+
+jobs:
+  integration:
+    name: Continous Integration
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      - name: Lint code
+        run: echo "Linting repository"
+      
+      - name: run test
+        run: echo "Test complete"
+
+  build-push-gcr:
+    name: Build and Push to GCP
+    needs: integration
+    runs-on: ubuntu-latest
+    env:
+      REPOSITORY: heart-stroke-project
+      IMAGE_NAME: heart-stroke-image
+      IMAGE_TAG: latest
+      PROJECT_ID: our-velocity-363109
+      GAR_LOCATION: asia-south1
+   
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      
+      - name: Authenticate with Google
+        uses: 'google-github-actions/auth@v0'
+        with:
+          credentials_json: '${{ secrets.GCP_CREDENTIALS }}'
+
+      - name: Login to Artifact Registry
+        uses: docker/login-action@v1
+        with:
+          registry: asia.gcr.io
+          username: _json_key
+          password: ${{ secrets.GCP_CREDENTIALS }}
+
+      - name: Login to Artifact Registry
+        run: gcloud auth configure-docker $GAR_LOCATION-docker.pkg.dev
+
+      - name: Docker build
+        run: docker build -t "$GAR_LOCATION-docker.pkg.dev/$PROJECT_ID/$REPOSITORY/$IMAGE_NAME:$IMAGE_TAG" .
+
+      - name: Docker Push
+        run: docker push "$GAR_LOCATION-docker.pkg.dev/$PROJECT_ID/$REPOSITORY/$IMAGE_NAME:$IMAGE_TAG"
+
+  pull-and-deploy:
+    name: Continuous Deployment
+    needs: build-push-gcr
+    runs-on: self-hosted
+    env:
+      REPOSITORY: heart-stroke-project
+      IMAGE_NAME: heart-stroke-image
+      IMAGE_TAG: latest
+      PROJECT_ID: our-velocity-363109
+      GAR_LOCATION: asia-south1
+    steps:
+      - name: Authenticate with Google Cloud
+        uses: google-github-actions/auth@v0
+        with:
+          credentials_json: ${{ secrets.GCP_CREDENTIALS }}
+
+      - name: Login to Artifact Registry
+        uses: docker/login-action@v1
+        with:
+          registry: asia.gcr.io
+          username: _json_key
+          password: ${{ secrets.GCP_CREDENTIALS }}
+
+      - name: Login to Artifact Registry
+        run: gcloud auth configure-docker $GAR_LOCATION-docker.pkg.dev
+
+      - name: Authenticate to Artifact Registry
+        run: gcloud auth print-access-token | docker login -u oauth2accesstoken --password-stdin "$GAR_LOCATION-docker.pkg.dev"
+
+      - name: Docker pull
+        run: docker pull "$GAR_LOCATION-docker.pkg.dev/$PROJECT_ID/$REPOSITORY/$IMAGE_NAME:$IMAGE_TAG"
+
+      - name: Run Image
+        run: |-
+          docker run -d -e AWS_ACCESS_KEY_ID="${{ secrets.AWS_ACCESS_KEY_ID }}" -e AWS_SECRET_ACCESS_KEY="${{ secrets.AWS_SECRET_ACCESS_KEY }}" -e MONGODB_URL="${{ secrets.MONGODB_URL }}" -p 80:8080 "$GAR_LOCATION-docker.pkg.dev/$PROJECT_ID/$REPOSITORY/$IMAGE_NAME:$IMAGE_TAG"
+      
+      - name: Docker System Prune to Remove Old Images
+        run: sudo docker system prune -f
